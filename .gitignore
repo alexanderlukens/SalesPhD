@@ -3,5 +3,6 @@ credentials.json
 .DS_Store
 env-var
 package-lock.json
+google-cloud-sdk/
 *.mp3
 *.flac
