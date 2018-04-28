@@ -15,7 +15,7 @@ const server_ip = process.env.SERVER_IP
 const server_port = 3000;
 
 const audio = {
-    
+
     readStream: fs.createReadStream(filename),
     writeStream: new streams.WritableStream(),
     socket: 0
@@ -26,12 +26,12 @@ const config = {
     sampleRateHertz: sampleRateHertz,
     languageCode: languageCode,
 };
-    
+
 const stream = {
     UUID: process.pid,  //hopefully this will unique enough for now
     file_size: fs.statSync(filename).size, //in bytes
     packet_size: packet_size,
-    number_of_packets: -1,  
+    number_of_packets: -1,
     packet_number: -1
 }
 
@@ -48,7 +48,6 @@ async function checkSetup()
     let isExists = await urlExists(server_ip);
 //    assert(isExists == true)
 
-    
     return true;
 }
 
@@ -56,7 +55,7 @@ async function checkSetup()
 //Set up our data structures
 async function init()
 {
-    
+
     stream.number_of_packets = Math.floor(stream.file_size / packet_size);
     stream.packet_number  = 0;
     //Because I'm using local tunnel and I've told it to  use port 3000
@@ -75,11 +74,11 @@ function createJSONWrapper(array_of_header_objects)
 {
     let jsonWrapper = {}
 
- 
+
     for(var a_object in array_of_header_objects)
     {
 	jsonWrapper = Object.assign(jsonWrapper,array_of_header_objects[a_object]);
-    }    
+    }
     return jsonWrapper;
 }
 
@@ -98,12 +97,12 @@ audio.readStream.on('readable', function() {
 //	    break;
 	}
 
-	
-	let b64Data =  chunk; 
-	
+
+	let b64Data =  chunk;
+
 	console.log("buffer size:", b64Data.length);
 
-	
+
 	let wrapper = createJSONWrapper([config,stream]);
 	wrapper.content = b64Data;
 
@@ -117,7 +116,7 @@ audio.readStream.on('readable', function() {
 	stream.packet_number++;
 
 	//console.log(wrapper.packet_number);
-	
+
 	audio.socket.emit('audio',wrapper);
     }
 });
@@ -128,9 +127,10 @@ audio.readStream.on('readable', function() {
 async function main()
 {
     await checkSetup();
+    console.log('hello')
     await init();
     //audio.readStream.pipe(audio.writeStream);
-    
+
 }
 
 
