@@ -10,7 +10,6 @@ const filename = process.env.PATH_TO_SAMPLE_DATA;
 const encoding = 'FLAC';
 const sampleRateHertz = 8000;
 const languageCode = 'en-US';
-console.log(filename)
 const config = {
   encoding: encoding,
   sampleRateHertz: sampleRateHertz,
@@ -34,6 +33,7 @@ client
       .map(result => result.alternatives[0].transcript)
       .join('\n');
     console.log(`Transcription: `, transcription);
+    fs.writeFile('test.json', JSON.stringify(response), 'utf-8');
   })
   .catch(err => {
     console.error('ERROR:', err);
